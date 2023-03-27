@@ -1,6 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
 using VehicleStateCodes;
+using VehicleStateCodes.Data.Domein.Domein;
+using VehicleStateCodes.DataBase.UnitOfWork;
 
 var logger = NLog.LogManager
     .Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -17,10 +20,13 @@ try
     builder.Host.UseNLog();
 
     // Add services to the container.
+    builder.Services.AddDbContext<Context>(options => options
+    .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddScoped<IUnitOfWork, UnitOFWork>();
     builder.Services.AddSwaggerGen();
 
     var app = builder.Build();
