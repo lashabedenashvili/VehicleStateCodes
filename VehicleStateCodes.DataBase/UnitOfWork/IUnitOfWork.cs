@@ -11,6 +11,9 @@ namespace VehicleStateCodes.DataBase.UnitOfWork
     {
         IUserRepository User { get; }
         IUserPasswordHistoryRepository UserPasswordHistory { get; }
+        IStateNumberRepository StateNumber { get; }
+        IStateNumberOrderRepository StateNumberOrder { get; }
+        IStateNumberReservationRepository StateNumberReservation { get; }   
         void SaveChanges();
         void Rollback();
         Task SaveChangesAsync();

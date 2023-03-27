@@ -69,5 +69,10 @@ namespace VehicleStateCodes.DataBase.GenericRepository
         {
             return await _context.SaveChangesAsync();
         }
+
+        public IQueryable<TSource> AsQuareble()
+        {
+            return _context.Set<TSource>().AsQueryable();
+        }
     }
 }

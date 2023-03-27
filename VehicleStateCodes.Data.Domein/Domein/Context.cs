@@ -17,7 +17,10 @@ namespace VehicleStateCodes.Data.Domein.Domein
         {            
             modelBuilder.ApplyConfiguration(new UserMB());
             modelBuilder.ApplyConfiguration(new UserPasswordHistoryMB());
-         
+            modelBuilder.ApplyConfiguration(new StateNumberMB());
+            modelBuilder.ApplyConfiguration(new StateNumberOrderMB());
+            modelBuilder.ApplyConfiguration(new StateNumberReservationMB());
+
         }
     }
 }

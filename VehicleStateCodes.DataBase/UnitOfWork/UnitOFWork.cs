@@ -15,11 +15,21 @@ namespace VehicleStateCodes.DataBase.UnitOfWork
         private readonly Context _context;
         public IUserRepository User { get; private set; }
         public IUserPasswordHistoryRepository UserPasswordHistory { get; private set; }
+
+        public IStateNumberRepository StateNumber { get; private set; }
+
+        public IStateNumberOrderRepository StateNumberOrder { get; private set; }
+
+        public IStateNumberReservationRepository StateNumberReservation { get; private set; }
+
         public UnitOFWork(Context context)
         {
             _context = context;
             User = new UserRepository(_context);
             UserPasswordHistory = new UserPasswordHistoryRepository(_context);
+            StateNumber = new StateNumberRepository(_context);
+            StateNumberOrder=new StateNumberOrderRepository(_context);
+            StateNumberReservation = new StateNumberReservationRepository(_context);
         }
 
         public void Rollback()

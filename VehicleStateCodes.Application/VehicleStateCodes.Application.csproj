@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VehicleStateCodes.DataBase\VehicleStateCodes.DataBase.csproj" />
+    <ProjectReference Include="..\VehicleStateCodes.Infrastructure\VehicleStateCodes.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
