@@ -9,6 +9,7 @@ using VehicleStateCodes.DataBase.UnitOfWork;
 using VehicleStateCodes.Infrastructure.ApiServiceResponse;
 using VehicleStateCodes.Infrastructure.Dto;
 using VehicleStateCodes.Infrastructure.Dto.StateNumberDto;
+using static VehicleStateCodes.Data.Domein.Data.Enum.Enum;
 
 namespace VehicleStateCodes.Application.Services.StateNumberServ
 {
@@ -178,6 +179,32 @@ namespace VehicleStateCodes.Application.Services.StateNumberServ
             await _unitOfWor.StateNumberOrder.AddAsync(numberOrder);
             await _unitOfWor.SaveChangesAsync();
             return new SuccessApiResponse<string>("The number has been reserved succesfully");
+        }
+
+        public async Task <ApiResponse<string>>CancellationOrderReservation(AddStateNumberDto request, bool IsOrder)
+        {
+            var numberDB= await _unitOfWor.StateNumber
+                .Where(x=>x.Number==request.StateNumber.ToUpper())
+                .Include(x=>x.StateNumberReservation)
+                .Include(x=>x.StateNumberOrder)
+                .FirstOrDefaultAsync();
+
+            if (numberDB == null) return new BadApiResponse<string>("The number does not exist");
+            if (IsOrder && numberDB.StateNumberOrder.Count != 0)
+            {
+                await _unitOfWor.StateNumberOrder.Delete(numberDB.StateNumberOrder.FirstOrDefault());
+                await _unitOfWor.StateNumberOrder.SaveChangesAsync();
+                return new SuccessApiResponse<string>("Order has been canceled");
+            }           
+
+            if (!IsOrder && numberDB.StateNumberOrder.Count != 0)
+            {
+                await _unitOfWor.StateNumberReservation.Delete(numberDB.StateNumberReservation.FirstOrDefault());
+                await _unitOfWor.StateNumberOrder.SaveChangesAsync();
+                return new SuccessApiResponse<string>("Reservation has been canceled");
+            }
+            return new BadApiResponse<string>(IsOrder == true ? "Order Is alredy canceled" : "Reservation Is alredy canceled");
+                
         }
     }
 }

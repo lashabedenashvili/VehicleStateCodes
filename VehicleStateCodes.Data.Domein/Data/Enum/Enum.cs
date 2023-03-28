@@ -19,5 +19,6 @@ namespace VehicleStateCodes.Data.Domein.Data.Enum
             Armenia=2,
             Azerbaijan =3,
         }
+        
     }
 }

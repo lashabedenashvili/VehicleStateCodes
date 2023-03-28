@@ -14,5 +14,6 @@ namespace VehicleStateCodes.Application.Services.StateNumberServ
         Task<ApiResponse<NumberDetailInfoDto>> GetNumberDetailInfoById(int numberId);
         Task<ApiResponse<string>> ReservationNumber(AddStateNumberDto request);
         Task<ApiResponse<string>> OrderNumber(AddStateNumberDto request);
+        Task<ApiResponse<string>> CancellationOrderReservation(AddStateNumberDto request, bool IsOrder);
     }
 }

@@ -68,5 +68,21 @@ namespace VehicleStateCodes.Controllers
             return ResponseResult(await _stateNumberService.OrderNumber(request));
         }
 
+
+        [HttpPost("CancellationOrder")]
+
+        public async Task<ActionResult<ApiResponse<string>>> CancellationOrder(AddStateNumberDto request)
+        {
+            return ResponseResult(await _stateNumberService.CancellationOrderReservation(request,true));
+        }
+
+
+        [HttpPost("CancellationReservation")]
+
+        public async Task<ActionResult<ApiResponse<string>>> CancellationReservation(AddStateNumberDto request)
+        {
+            return ResponseResult(await _stateNumberService.CancellationOrderReservation(request, false));
+        }
+
     }
 }
