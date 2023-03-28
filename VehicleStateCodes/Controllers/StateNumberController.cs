@@ -68,7 +68,7 @@ namespace VehicleStateCodes.Controllers
             return ResponseResult(await _stateNumberService.OrderNumber(request));
         }
 
-
+        [Authorize( AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("CancellationOrder")]
 
         public async Task<ActionResult<ApiResponse<string>>> CancellationOrder(AddStateNumberDto request)
@@ -76,7 +76,7 @@ namespace VehicleStateCodes.Controllers
             return ResponseResult(await _stateNumberService.CancellationOrderReservation(request,true));
         }
 
-
+        [Authorize( AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("CancellationReservation")]
 
         public async Task<ActionResult<ApiResponse<string>>> CancellationReservation(AddStateNumberDto request)
