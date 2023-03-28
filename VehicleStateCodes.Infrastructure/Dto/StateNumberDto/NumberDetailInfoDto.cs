@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace VehicleStateCodes.Infrastructure.Dto.StateNumberDto
 {
-    public class NumberDetailInfoDto:GetStateNumberDto    {
-        
+    public class NumberDetailInfoDto:GetStateNumberDto  
+    {
+   
         public StateNumberOrderDto StateNumberOrder { get; set; }
         public StateNumberReservationDto StateNumberReservation { get; set; }
     }

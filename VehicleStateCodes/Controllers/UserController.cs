@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using VehicleStateCodes.Application.Services.UserService;
 using VehicleStateCodes.Infrastructure.ApiServiceResponse;
 using VehicleStateCodes.Infrastructure.Dto.UserDto;
@@ -26,16 +28,30 @@ namespace VehicleStateCodes.Controllers
             return ResponseResult(await _userService.LogIn(request));
         }
 
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("UserUpdate")]
-        public async Task<ActionResult<ApiResponse<UserUpdateDto>>> UserUpdate(int id,UserUpdateDto request)
+        public async Task<ActionResult<ApiResponse<UserUpdateDto>>> UserUpdate(UserUpdateDto request)
         {
+            var id = GetId();
             return ResponseResult(await _userService.Update(id,request));
         }
 
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("PasswordUpdate")]
-        public async Task<ActionResult<ApiResponse<string>>> UserUPasswordUpdatepdate(int id, ChangePasswordDto request)
+        public async Task<ActionResult<ApiResponse<string>>> UserUPasswordUpdatepdate( ChangePasswordDto request)
         {
+            var id = GetId();
             return ResponseResult(await _userService.UpdatePassword( request, id));
         }
+
+        [Authorize(Roles = "admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpDelete("DeleteUser")]
+        public async Task<ActionResult<ApiResponse<string>>> DeleteUser(int id)
+        {            
+            return ResponseResult(await _userService.Delete(id));
+        }
+
     }
 }

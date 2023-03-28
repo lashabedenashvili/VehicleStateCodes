@@ -21,6 +21,7 @@ namespace VehicleStateCodes.Data.Domein.Domein.EntityModelBuilders
             modelBuilder.Property(x => x.PhoneNumber).HasMaxLength(25).IsRequired();
             modelBuilder.Property(x => x.Email).HasMaxLength(50).IsRequired();
             modelBuilder.Property(x => x.IsActive).IsRequired();
+            modelBuilder.Property(x=>x.UserRole).IsRequired().HasMaxLength(20);
 
             modelBuilder
                 .HasMany(user => user.UserPasswordHistory)

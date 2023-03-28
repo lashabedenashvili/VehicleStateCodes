@@ -1,8 +1,11 @@
+using FluentValidation.AspNetCore;
+using Library.Infrastructure.PropertyValidator;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
+using System.Reflection;
 using VehicleStateCodes;
 using VehicleStateCodes.Application.Services.StateNumberServ;
 using VehicleStateCodes.Application.Services.UserService;
@@ -11,6 +14,7 @@ using VehicleStateCodes.DataBase.GenericRepository;
 using VehicleStateCodes.DataBase.Repositories.Implementation;
 using VehicleStateCodes.DataBase.Repositories.Interface;
 using VehicleStateCodes.DataBase.UnitOfWork;
+using VehicleStateCodes.Infrastructure.Dto;
 
 var logger = NLog.LogManager
     .Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -30,6 +34,18 @@ try
     builder.Services.AddDbContext<Context>(options => options
     .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+    //Fluent Validator
+    builder.Services.AddControllers().AddFluentValidation(options =>
+    {
+        options.ImplicitlyValidateChildProperties = true;
+        options.ImplicitlyValidateRootCollectionElements = true;
+
+        options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    });
+
+    //validator
+    builder.Services.AddValidators();
+
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
@@ -37,6 +53,7 @@ try
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IStateNumberService, StateNumberService>();
+    builder.Services.AddScoped<IPropertyValidators, PropertyValidators>();
     builder.Services.AddScoped(typeof(IGeneralRepository<>), typeof(GeneralRepository<>));
     builder.Services.AddSwaggerGen();
 

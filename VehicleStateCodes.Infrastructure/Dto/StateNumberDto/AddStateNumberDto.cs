@@ -8,20 +8,14 @@ using System.Threading.Tasks;
 
 namespace VehicleStateCodes.Infrastructure.Dto.StateNumberDto
 {
-    public class FilteringStateNumberDto
+    public class AddStateNumberDto
     {
-        public int? Id { get; set; }
         public string StateNumber { get; set; }
-        public DateTime? CreateFrom { get; set; }
-        public DateTime? CreatoTo { get; set; }
-        public int PageNumb { get; set; } = 1;
-        public int PageSize { get; set; } = 2;
     }
-
-    public class FilteringStateNumberDtoValidator : AbstractValidator<FilteringStateNumberDto>
+    public class AddStateNumberDtoValidator : AbstractValidator<AddStateNumberDto>
     {
         private readonly IPropertyValidators _validator;
-        public FilteringStateNumberDtoValidator(IPropertyValidators validator)
+        public AddStateNumberDtoValidator(IPropertyValidators validator)
         {
             _validator = validator;
             RuleFor(x => x.StateNumber)
@@ -30,15 +24,10 @@ namespace VehicleStateCodes.Infrastructure.Dto.StateNumberDto
                 .WithMessage(_validator.errNotCorretFormat)
                 .MaximumLength(7);
 
-            RuleFor(x => x.PageNumb)
-                .LessThan(50);
 
-
-            RuleFor(x => x.PageSize)
-                .LessThan(50);
+            
 
 
         }
-
     }
 }

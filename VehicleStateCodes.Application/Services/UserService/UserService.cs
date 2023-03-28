@@ -26,6 +26,18 @@ namespace VehicleStateCodes.Application.Services.UserService
             _unitOfWork = unitOfWork;
             _configuration = configuration;            
         }
+
+        public async Task<ApiResponse<string>> Delete(int id)
+        {
+            var userDb = await _unitOfWork.User.GetAsync(x => x.Id == id);
+            if (userDb != null)
+            {
+                await _unitOfWork.User.Delete(userDb);
+                await _unitOfWork.User.SaveChangesAsync();
+                return new SuccessApiResponse<string>("User has been deleted");
+            }
+            return new BadApiResponse<string>("User Does not exist");
+        }
         public async Task<ApiResponse<string>> LogIn(UserLogInDto request)
         {
             var userDb =  await _unitOfWork.User.Where(x => x.Email == request.Email)
@@ -62,7 +74,9 @@ namespace VehicleStateCodes.Application.Services.UserService
                     Name = request.Name,
                     SurName = request.SurName,
                     PhoneNumber = request.PhoneNumber,
-                    IsActive = true
+                    IsActive = true,
+                    UserRole = "member"
+
                 };
                 var userPassHistory = new UserPasswordHistory
                 {
@@ -168,7 +182,8 @@ namespace VehicleStateCodes.Application.Services.UserService
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-                new Claim(ClaimTypes.Email,user.Email.ToString())
+                new Claim(ClaimTypes.Email,user.Email.ToString()),
+                new Claim(ClaimTypes.Role,user.UserRole.ToString())
             };          
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8

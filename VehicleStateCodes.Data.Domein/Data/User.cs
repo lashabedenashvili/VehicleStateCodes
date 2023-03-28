@@ -17,6 +17,7 @@ namespace VehicleStateCodes.Data.Domein.Data
         public Cityzen Cityzen { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public string UserRole { get; set; }
         public bool IsActive { get; set; }
         public ICollection<UserPasswordHistory> UserPasswordHistory { get; set; }
     }
